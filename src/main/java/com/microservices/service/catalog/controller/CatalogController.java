@@ -28,13 +28,13 @@ public class CatalogController {
 
         UserRating ratings = restTemplate.getForObject("http://localhost:8803/rating/user/"+userId, UserRating.class);
         List<Catalog> catalogList = ratings.getRatingList().stream().map(rating -> {
-            //Movie movie = restTemplate.getForObject("http://localhost:8802/info/" + rating.getMovieId(), Movie.class);
-            Movie movie = webClientBuilder.build()
+            Movie movie = restTemplate.getForObject("http://localhost:8802/info/movie/" + rating.getMovieId(), Movie.class);
+            /*Movie movie = webClientBuilder.build()
                     .get()
                     .uri("http://localhost:8802/info/" + rating.getMovieId())
                     .retrieve()
                     .bodyToMono(Movie.class)
-                    .block();
+                    .block();*/
 
             return new Catalog(movie.getName(), "Test", rating.getRating());
         })
